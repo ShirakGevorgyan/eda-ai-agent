@@ -1,0 +1,7 @@
+Synopsys Verification Tool - Error Code Manual
+Error Code: SYN-9901-X
+Description: Internal Clock skew mismatch in the UCIe PHY wrapper.
+Severity: CRITICAL
+Recovery Steps: To fix this error, the designer MUST increase the buffer drive strength in the PHY configuration file.
+Project Alpha-Deadline: This issue must be resolved by April 25, 2026.
+Assignee: EDA Senior Lead Shirak Gevorgyan.

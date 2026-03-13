@@ -14,3 +14,4 @@ numpy<2.0
 unstructured
 markdown
 streamlit
+python-multipart
