@@ -1,4 +1,0 @@
-{"timestamp": "2026-03-13T18:18:01.163275", "model": "gpt-4o", "question": "What files do you see?", "duration_sec": 5.46, "status": "success"}
-{"timestamp": "2026-03-13T19:02:04.566616", "model": "gpt-4o", "question": "What files do you see?", "duration_sec": 5.04, "status": "success"}
-{"timestamp": "2026-03-13T19:32:56.756626", "model": "gpt-4o", "question": "What is the main module in counter.v?", "duration_sec": 8.36, "status": "success"}
-{"timestamp": "2026-03-13T19:33:32.749522", "model": "gpt-3.5-turbo", "question": "What is the main module in counter.v?", "duration_sec": 3.94, "status": "success"}
