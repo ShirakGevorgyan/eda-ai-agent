@@ -7,59 +7,74 @@ from app.core.config import settings
 
 class EDAAgent:
     """
-    Expert AI Agent for Synopsys EDA.
-    This class creates an AI that can answer questions using local tools.
+    This is an Expert AI Agent for Synopsys EDA.
+    It can change its 'brain' (model) dynamically.
     """
 
     def __init__(self):
-        # 1. Setup the AI model
-        self.llm = ChatOpenAI(
-            model=settings.MODEL_NAME, 
-            api_key=settings.OPENAI_API_KEY,
-            temperature=0
-        )
-
-        # 2. Get the memory tool
+        # 1. Setup Memory and Tools (These don't change)
         self.vector_store = VectorStoreService()
         self.retriever = self.vector_store.get_retriever()
 
-        # 3. Create the retriever tool
+        # Tool 1: Search inside documents
         self.retriever_tool = Tool(
             name="eda_knowledge_base",
             func=self.retriever.invoke,
-            description="IMPORTANT: Use this tool to find information about Verilog, SDC, and EDA tools. "
-                        "Always check this tool before answering questions about hardware design."
+            description="IMPORTANT: Use this tool to find information inside Verilog, SDC, and EDA files."
         )
-        # NEW TOOL: List files
+
+        # Tool 2: List file names
         self.list_files_tool = Tool(
             name="list_data_files",
             func=lambda x: os.listdir("data"),
-            description="Use this tool to see the actual list of file names in the data folder."
+            description="Use this tool to see the names of all files in the data folder."
         )
         
         self.tools = [self.retriever_tool, self.list_files_tool]
 
-        # 4. Create the LangGraph Agent (Simple version)
-        self.agent = create_react_agent(self.llm, self.tools)
+    def _get_llm(self, model_name: str):
+        """
+        This helper function creates the LLM brain.
+        It uses the model name sent from the UI.
+        """
+        if model_name == settings.LOCAL_MODEL_NAME:
+            return ChatOpenAI(
+                model=model_name,
+                api_key="ollama",
+                base_url=settings.OLLAMA_BASE_URL,
+                temperature=0
+            )
+        else:
+            return ChatOpenAI(
+                model=model_name, 
+                api_key=settings.OPENAI_API_KEY,
+                temperature=0
+            )
 
-    def ask(self, question: str):
+    def ask(self, question: str, model_name: str = settings.DEFAULT_MODEL):
         """
-        We send a special instruction (System Message) + the User Question.
+        1. Create a new LLM with the selected model.
+        2. Create a new Agent.
+        3. Get the answer.
         """
-        # We define who the AI is and what it should do
+        # Step 1: Initialize the brain with the specific model
+        llm = self._get_llm(model_name)
+        
+        # Step 2: Create the LangGraph agent for this specific LLM
+        agent = create_react_agent(llm, self.tools)
+
+        # Step 3: Instructions for the expert
         system_instruction = (
             "You are a Synopsys EDA Expert. "
-            "You must ALWAYS use the 'eda_knowledge_base' tool to check local files first. "
-            "If the information is in the file, use it. "
+            "You must ALWAYS check the 'list_data_files' to see what files you have. "
+            "Then use 'eda_knowledge_base' to read them. "
             "Now answer this question: "
         )
         
-        # Combine the instruction with the user's question
         full_input = f"{system_instruction} {question}"
         
-        # Send to the agent
+        # Step 4: Run the agent
         inputs = {"messages": [("user", full_input)]}
-        response = self.agent.invoke(inputs)
+        response = agent.invoke(inputs)
         
-        # Return only the final text
         return response["messages"][-1].content

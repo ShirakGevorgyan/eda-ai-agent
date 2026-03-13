@@ -1,5 +1,14 @@
+import sys
+import os
+
+# Add the project root directory to the Python path
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+
 import streamlit as st
 import requests
+from app.core.config import settings
+
 
 st.set_page_config(page_title="Synopsys EDA Agent", page_icon="🤖", layout="wide")
 st.title("🤖 EDA AI Agent")
@@ -12,7 +21,7 @@ with st.sidebar:
     
     selected_model = st.selectbox(
         "Choose AI Model:",
-        ["gpt-4o", "gpt-3.5-turbo", "llama3 (local)"]
+        options=settings.AVAILABLE_MODELS
     )
     
     st.divider()
