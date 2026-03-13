@@ -5,3 +5,4 @@ __pycache__/
 test_config.py
 test_loader.py
 test_vector_store.py
+test_agent.py

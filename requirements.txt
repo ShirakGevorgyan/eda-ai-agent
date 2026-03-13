@@ -2,7 +2,9 @@ python-dotenv
 fastapi
 uvicorn
 pypdf
-langchain
+langchain>=0.1.0
+langgraph
+langchainhub
 langchain-community
 langchain-core
 langchain-openai
