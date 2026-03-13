@@ -1,14 +1,25 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, HTTPException
+from pydantic import BaseModel
+from app.services.ai_agent.agent import EDAAgent
 
 router = APIRouter()
 
+agent = EDAAgent()
+class ChatRequest(BaseModel):
+    message: str
+
 @router.post("/send")
-async def send_message(message: str):
+async def send_message(request: ChatRequest):
     """
-    This route will receive a message from the user.
-    For now, it just returns the same message back.
+    This function takes the user's message and sends it to the AI Agent.
+    Then it returns the AI's answer.
     """
-    return {
-        "user_message": message,
-        "ai_response": f"I received your message: '{message}'. Soon I will use AI to answer!"
-    }
+    try:
+        response = agent.ask(request.message)
+        
+        return {
+            "user_message": request.message,
+            "ai_response": response
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
