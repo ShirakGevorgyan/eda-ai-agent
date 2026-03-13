@@ -13,3 +13,4 @@ chromadb
 numpy<2.0
 unstructured
 markdown
+streamlit
