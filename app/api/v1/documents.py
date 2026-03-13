@@ -1,35 +1,37 @@
+import os
 import shutil
 from fastapi import APIRouter, UploadFile, File, HTTPException
-from app.services.rag.document_loader import DocumentLoaderService
-from app.services.rag.vector_store import VectorStoreService
 
 router = APIRouter()
 
-loader_service = DocumentLoaderService()
-vector_service = VectorStoreService()
-
 @router.post("/upload")
 async def upload_document(file: UploadFile = File(...)):
-    """
-    A1-A2 Level Comments:
-    This function gets a file from the user.
-    It saves the file to the 'data' folder.
-    Then, it adds the file information to the AI's memory.
-    """
+    # Create 'data' folder if it does not exist
+    if not os.path.exists("data"):
+        os.makedirs("data")
+
     upload_path = f"data/{file.filename}"
     
     try:
+        # Save the file
         with open(upload_path, "wb") as buffer:
             shutil.copyfileobj(file.file, buffer)
         
-        new_docs = loader_service.load_single_document(upload_path)
+        # We need to import these here to avoid circular imports
+        from app.services.rag.document_loader import DocumentLoaderService
+        from app.services.rag.vector_store import VectorStoreService
         
-        if not new_docs:
-            raise HTTPException(status_code=400, detail="Could not read the file.")
+        loader_service = DocumentLoaderService()
+        vector_service = VectorStoreService()
 
-        vector_service.add_documents(new_docs)
-        
-        return {"message": f"File '{file.filename}' uploaded and indexed successfully!"}
-    
+        # Load and Index
+        new_docs = loader_service.load_single_document(upload_path)
+        if new_docs:
+            vector_service.add_documents(new_docs)
+            return {"message": "Successfully indexed"}
+        else:
+            return {"message": "File is empty or not supported"}
+            
     except Exception as e:
+        print(f"Error: {e}") # This will show in the terminal
         raise HTTPException(status_code=500, detail=str(e))

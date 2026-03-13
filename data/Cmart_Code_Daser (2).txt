@@ -1,0 +1,183 @@
+1 lesson Python: https://youtu.be/Bk52NnpHogs?si=HLrSpoWGQSiGAqXe 
+
+
+2 lessons python: https://youtube.com/watch?v=pdZ0C1RccXc&feature=shared 
+
+3 lesson python:   https://youtu.be/YF2tcpouKc4
+
+4 lesson python:     https://youtu.be/0AHz181FsYk 
+
+5 lesson python : https://youtu.be/Ax8XXsI-QRU 
+
+6 lesson python : https://youtu.be/OJgW0pY4jkw 
+
+7 lesson python: https://youtu.be/-uu5XKgTUrM 
+
+8 lesson python: https://youtu.be/m3xqnIj8XNk 
+
+9 lesson python: https://youtu.be/e_pR9cWcDVE 
+
+10 lesson python: https://youtu.be/IzV13cSWhk4 
+
+11 lesson python: https://youtu.be/o5U9pGrSWGw 
+
+12 lesson python: https://youtu.be/r2WJ8JSPnKI 
+
+13 lesson python: https://youtu.be/IkCDjerosvE 
+
+14 lesson python: https://youtu.be/-oBoLk7-tEE 
+
+15 lesson python: https://youtu.be/HsA-egWPjG4 
+
+16 lesson python: ‘
+
+17 lesson python: https://youtu.be/14bLDzbGFc8 
+
+18 Lesson python: https://youtu.be/EBNIN-q6zoY 
+
+19 lesson python: https://youtu.be/4awOMjul2DM 
+
+21 lesson python : https://youtu.be/Z_TK5WLuExI 
+
+22 lesson python : https://youtu.be/6o0Aau1R-Do 
+23 lesson python: https://youtu.be/625vHCkMXOQ  
+
+24 lesson python: https://youtu.be/uo19ov0j2H8 
+
+25 lesson python: https://youtu.be/V0Cb1D8VKFk 
+
+26 lesson python: https://youtu.be/csc3E0rVH0s 
+
+27 lesson python: https://youtu.be/pF8a2pVTJLE 
+
+28 lesson python: https://youtu.be/WFslgvzUjKU 
+
+29 lesson python: https://youtu.be/Rk-7Pn1MNRM 
+
+30 lesson python: https://youtu.be/Lvc6Iw3bu_A 
+
+31 lesson python: https://youtu.be/dFQCaLXow5k 
+
+
+
+32 lesson python: https://youtu.be/g7_PxC1-bsg 
+
+33 lesson python: https://youtu.be/a_rhsuUxKCI 
+
+34 lesson python: https://youtu.be/Uc-FJziEatA 
+
+36 LESSON SQL : https://youtu.be/zBE1T3Z2aXs 
+
+37 lesson SQL : https://youtu.be/KljCSRuwNGU 
+
+38 lesson SQL : https://youtu.be/Dz0oWkQAxJQ 
+
+39 lesson Numpy: https://youtu.be/l8eHDuvtgec 
+
+40 lesson Numpy: https://youtu.be/sKsKna3lvUQ 
+
+41 lesson Numpy: https://youtu.be/Juya4HmMdcQ 
+
+42 lesson Pandas : https://youtu.be/zv9PcBBnQl4 
+
+43 lesson Probability : https://youtu.be/tr5ElIbl72E 
+
+44 lesson data visualization: https://youtu.be/BA0G-HmI0zc
+45 lesson Linear Regression: https://youtu.be/Xqey4dXrIUk 
+
+46 lesson Linear Regression (part 2): https://youtu.be/YZ7hT-6lFP4 
+
+47 lesson linear Regression (Part 3): https://youtu.be/EBoqIM5j0gM  
+
+48 Lesson KNN, classification report : https://youtu.be/KfEUH3Gn4H8 
+
+49 Lesson KNN, Classification report (part2): https://youtu.be/hXZbfQiJbxM 
+
+50  Lesson Decision Tree ML :  https://youtu.be/WDUUPuxxYpI 
+
+ 51 Lesson Decision Tree (Part2): https://youtu.be/h6ei3wFa9Bo 
+
+52 Lesson Random Forest ML : https://youtu.be/2TNBvnrmH6o 
+
+54 Lesson Linux Pipeline ML : https://youtu.be/5xJ1ixs3CTA 
+
+55  Lesson mixt un peu de tou ML : https://youtu.be/al4D0fHc-n0 
+
+ TAKI KODE  KNN REGRESSION MANUEL: https://youtu.be/4nEs7JbA0Kc 
+
+56 Manual encoder scaler minimal pre-process: https://youtu.be/E3KWWql7HGk 
+
+57 [Lesson57][Image Processing] K_Means : https://youtu.be/2DQcp2Hy5qE
+
+59  [Python][Lesson59][NLP]                         : https://youtu.be/XPt4JozKAw8
+
+60  Logistic regression et regularisation: https://youtu.be/DpE0iLxMotE 
+
+61 NEW PARSING: https://youtu.be/4GxGS8n9IBE 
+
+62 Lesson PCA : https://youtu.be/D3W8Qd5PtoU 
+
+63 Lesson BOOSTING : https://youtu.be/5sXNC-Q6HFA 
+
+68 NEURAL NETWORK: https://youtu.be/cMqblFPeNZw 
+
+69 KERAS LESSON 1 ( NEURAL ): https://youtu.be/IsL4y1prHws 
+
+70 KERAS LESSON 2 ( CNN ): https://youtu.be/2SdVIuuv8iY 
+
+71 SHIRAK Grid Search Neural: https://youtu.be/8Afo0k0WhAY 
+Transfer Learning (Albert autre) https://youtu.be/5GzmL8KDpI0 
+
+Lesson72][NN OOP]: https://youtu.be/nxpFYhMmSrk
+
+Lesson73][Krisp Task]: https://youtu.be/fAkOzWbpbbw
+
+Lesson74][Gender Classification: https://youtu.be/zvm7Cwm6cjU
+
+Lesson 75[Cat Dog prediction: https://youtu.be/VTUP0blElwQ
+
+Lesson76][RNN lesson1: https://youtu.be/uhck5iC25W4
+
+
+Lesson77][RNN lesson2: https://youtu.be/Kzwj9GVfIB4
+
+Lesson78][Kafka intro: https://youtu.be/L-4AMUVOHao
+
+
+Lesson79][Kafka lesson2: https://youtu.be/V-B51pLLS2o
+
+-----------------------------------------------------------------
+CONTINUATION  OF THE LESSONS WITH THE OTHER ALBERT
+
+Asatryan Albert:: https://youtu.be/luqmiz3bDEk
+
+
+Asatryan Albert:: https://youtu.be/QjEgvy96vyg 
+
+Asatryan Albert:: https://youtu.be/Jxjs5lBMoNs
+
+
+Asatryan Albert:: https://youtu.be/-23AMu8wwCk
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-------------------------------------------------------------------------
+
+
+61 [VARDKES 16-40][Logistic Regression]: https://youtu.be/YMGHHJFXf3k
+                                                                   
+ 63[Lesson63]  Vardgez probability             :https://youtu.be/mi3urwpN8H8 
+                                                                  
+
+65 [Vardkez][probabilité][Lesson65]: https://youtu.be/M6il6okYT7U 

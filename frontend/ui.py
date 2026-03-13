@@ -1,45 +1,61 @@
 import streamlit as st
 import requests
 
-# Set the page title and icon
-st.set_page_config(page_title="Synopsys EDA AI Agent", page_icon="🤖")
-
+st.set_page_config(page_title="Synopsys EDA Agent", page_icon="🤖", layout="wide")
 st.title("🤖 EDA AI Agent")
-st.markdown("### Ask questions about your Verilog, SDC, and Tcl files")
 
-# 1. Setup the Backend URL (our FastAPI server)
-API_URL = "http://127.0.0.1:8000/api/v1/chat/send"
+CHAT_URL = "http://127.0.0.1:8000/api/v1/chat/send"
+UPLOAD_URL = "http://127.0.0.1:8000/api/v1/documents/upload"
 
-# 2. Initialize Chat History
-# This keeps the messages on the screen
+with st.sidebar:
+    st.header("⚙️ Settings")
+    
+    selected_model = st.selectbox(
+        "Choose AI Model:",
+        ["gpt-4o", "gpt-3.5-turbo", "llama3 (local)"]
+    )
+    
+    st.divider()
+    
+    st.header("📁 Upload Documents")
+    uploaded_file = st.file_uploader("Choose a Verilog, SDC, or PDF file", type=["v", "sv", "sdc", "pdf", "txt", "tcl"])
+    
+    if st.button("Upload and Index"):
+        if uploaded_file is not None:
+            with st.spinner("Uploading and processing..."):
+                files = {"file": (uploaded_file.name, uploaded_file.getvalue())}
+                response = requests.post(UPLOAD_URL, files=files)
+                
+                if response.status_code == 200:
+                    st.success(f"Success! {uploaded_file.name} is now in AI memory.")
+                else:
+                    st.error("Failed to upload file.")
+        else:
+            st.warning("Please select a file first.")
+
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
-# 3. Display Chat Messages from history
 for message in st.session_state.messages:
     with st.chat_message(message["role"]):
         st.markdown(message["content"])
 
-# 4. User Input Area
-if prompt := st.chat_input("What is the period of the clock?"):
-    # Add user message to history and display it
+if prompt := st.chat_input("Ask about your hardware design..."):
     st.session_state.messages.append({"role": "user", "content": prompt})
     with st.chat_message("user"):
         st.markdown(prompt)
 
-    # 5. Send request to our FastAPI Backend
     with st.chat_message("assistant"):
-        with st.spinner("Thinking..."):
-            try:
-                # We send the message to our API
-                response = requests.post(API_URL, json={"message": prompt})
-                
-                if response.status_code == 200:
-                    ai_answer = response.json().get("ai_response")
-                    st.markdown(ai_answer)
-                    # Add AI response to history
-                    st.session_state.messages.append({"role": "assistant", "content": ai_answer})
-                else:
-                    st.error("Error: Could not reach the AI server.")
-            except Exception as e:
-                st.error(f"Connection error: {e}")
+        with st.spinner("Analyzing files..."):
+            payload = {
+                "message": prompt,
+                "model_name": selected_model
+            }
+            response = requests.post(CHAT_URL, json=payload)
+            
+            if response.status_code == 200:
+                answer = response.json().get("ai_response")
+                st.markdown(answer)
+                st.session_state.messages.append({"role": "assistant", "content": answer})
+            else:
+                st.error("Error communicating with Backend.")

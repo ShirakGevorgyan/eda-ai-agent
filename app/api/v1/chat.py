@@ -7,6 +7,7 @@ router = APIRouter()
 agent = EDAAgent()
 class ChatRequest(BaseModel):
     message: str
+    model_name: str = "gpt-4o"
 
 @router.post("/send")
 async def send_message(request: ChatRequest):
@@ -15,11 +16,8 @@ async def send_message(request: ChatRequest):
     Then it returns the AI's answer.
     """
     try:
+        agent.llm.model_name = request.model_name 
         response = agent.ask(request.message)
-        
-        return {
-            "user_message": request.message,
-            "ai_response": response
-        }
+        return {"user_message": request.message, "ai_response": response}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
