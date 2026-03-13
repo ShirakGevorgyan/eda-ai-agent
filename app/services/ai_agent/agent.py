@@ -30,7 +30,14 @@ class EDAAgent:
             description="IMPORTANT: Use this tool to find information about Verilog, SDC, and EDA tools. "
                         "Always check this tool before answering questions about hardware design."
         )
-        self.tools = [self.retriever_tool]
+        # NEW TOOL: List files
+        self.list_files_tool = Tool(
+            name="list_data_files",
+            func=lambda x: os.listdir("data"),
+            description="Use this tool to see the actual list of file names in the data folder."
+        )
+        
+        self.tools = [self.retriever_tool, self.list_files_tool]
 
         # 4. Create the LangGraph Agent (Simple version)
         self.agent = create_react_agent(self.llm, self.tools)

@@ -53,9 +53,15 @@ if prompt := st.chat_input("Ask about your hardware design..."):
             }
             response = requests.post(CHAT_URL, json=payload)
             
+            
             if response.status_code == 200:
-                answer = response.json().get("ai_response")
+                data = response.json()
+                answer = data.get("ai_response")
+                performance = data.get("performance") # Get time from backend
+                
                 st.markdown(answer)
+                st.caption(f"⏱️ Response time: {performance}") # Show time below answer
+                
                 st.session_state.messages.append({"role": "assistant", "content": answer})
             else:
                 st.error("Error communicating with Backend.")
