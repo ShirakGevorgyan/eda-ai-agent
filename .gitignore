@@ -4,3 +4,4 @@ __pycache__/
 .DS_Store
 test_config.py
 test_loader.py
+test_vector_store.py
