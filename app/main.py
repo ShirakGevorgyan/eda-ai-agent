@@ -1,9 +1,14 @@
 from fastapi import FastAPI
 from app.core.config import settings
+from app.api.v1 import chat
 
-# Create the main FastAPI application object
-# title: We get the name from our config settings
+
 app = FastAPI(title=settings.PROJECT_NAME, version="0.1.0")
+
+# Include the chat router in our app
+# All chat routes will now start with /api/v1/chat
+app.include_router(chat.router, prefix="/api/v1/chat", tags=["Chat"])
+
 
 @app.get("/")
 async def root():
