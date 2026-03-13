@@ -1,6 +1,4 @@
-__pycache__/
-*.py[cod]
-.env
 venv/
-.vscode/
-data/vector_db/
+__pycache__/
+.env
+.DS_Store
