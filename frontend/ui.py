@@ -1,74 +1,106 @@
 import sys
 import os
-
-# Add the project root directory to the Python path
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
-
-import streamlit as st
 import requests
+import streamlit as st
+
+# 1. Add the project root directory to the Python path
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from app.core.config import settings
 
-
+# 2. Page Configuration
 st.set_page_config(page_title="Synopsys EDA Agent", page_icon="🤖", layout="wide")
-st.title("🤖 EDA AI Agent")
 
-CHAT_URL = "http://127.0.0.1:8000/api/v1/chat/send"
-UPLOAD_URL = "http://127.0.0.1:8000/api/v1/documents/upload"
-
+# 3. Sidebar for Settings and Uploads
 with st.sidebar:
-    st.header("⚙️ Settings")
+    st.header("⚙️ Configuration")
     
+    # Model Selection
     selected_model = st.selectbox(
         "Choose AI Model:",
-        options=settings.AVAILABLE_MODELS
+        options=settings.AVAILABLE_MODELS,
+        help="OpenAI is fast. Llama is local and private."
     )
     
+    # Clear Chat Button
+    if st.button("🗑️ Clear Chat History"):
+        st.session_state.messages = []
+        st.rerun()
+
     st.divider()
     
     st.header("📁 Upload Documents")
-    uploaded_file = st.file_uploader("Choose a Verilog, SDC, or PDF file", type=["v", "sv", "sdc", "pdf", "txt", "tcl"])
+    uploaded_file = st.file_uploader(
+        "Upload Verilog, SDC, or Tcl files", 
+        type=["v", "sv", "sdc", "pdf", "txt", "tcl"]
+    )
     
-    if st.button("Upload and Index"):
-        if uploaded_file is not None:
-            with st.spinner("Uploading and processing..."):
+    if st.button("🚀 Upload and Index"):
+        if uploaded_file:
+            with st.spinner("Processing file..."):
+                UPLOAD_URL = f"{os.getenv('BACKEND_URL', 'http://127.0.0.1:8000')}/api/v1/documents/upload"
                 files = {"file": (uploaded_file.name, uploaded_file.getvalue())}
-                response = requests.post(UPLOAD_URL, files=files)
-                
-                if response.status_code == 200:
-                    st.success(f"Success! {uploaded_file.name} is now in AI memory.")
-                else:
-                    st.error("Failed to upload file.")
+                try:
+                    response = requests.post(UPLOAD_URL, files=files)
+                    if response.status_code == 200:
+                        st.success(f"Successfully indexed: {uploaded_file.name}")
+                    else:
+                        st.error("Upload failed.")
+                except Exception as e:
+                    st.error(f"Error: {e}")
         else:
-            st.warning("Please select a file first.")
+            st.warning("Please select a file.")
+
+# 4. Main Chat Interface
+st.title("🤖 Synopsys EDA AI Agent")
+st.info("Agentic AI for Hardware Design & Timing Analysis")
 
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
+# Display previous messages
 for message in st.session_state.messages:
     with st.chat_message(message["role"]):
         st.markdown(message["content"])
+        if "model" in message:
+            st.caption(f"Model: {message['model']} | ⏱️ {message.get('time', 'N/A')}")
 
-if prompt := st.chat_input("Ask about your hardware design..."):
+# User Input
+if prompt := st.chat_input("Ask about your hardware design (e.g., Explain the clock constraints)..."):
+    # Add user message
     st.session_state.messages.append({"role": "user", "content": prompt})
     with st.chat_message("user"):
         st.markdown(prompt)
 
-    # Inside user input block
+    # Assistant Response
     with st.chat_message("assistant"):
-        with st.spinner("Analyzing files with Local AI (this can take 1-2 minutes on CPU)..."):
+        # DYNAMIC SPINNER TEXT based on the selected model
+        spinner_text = "Thinking..."
+        if "llama" in selected_model.lower():
+            spinner_text = "Running Local AI (Llama 3.1) on CPU. This may take a minute..."
+        
+        with st.spinner(spinner_text):
             try:
+                CHAT_URL = f"{os.getenv('BACKEND_URL', 'http://127.0.0.1:8000')}/api/v1/chat/send"
                 payload = {"message": prompt, "model_name": selected_model}
-                # Added timeout=300 (5 minutes)
+                
                 response = requests.post(CHAT_URL, json=payload, timeout=300)
                 
                 if response.status_code == 200:
                     data = response.json()
                     answer = data.get("ai_response")
+                    perf = data.get("performance", "N/A")
+                    
                     st.markdown(answer)
+                    st.caption(f"Model: {selected_model} | ⏱️ Response time: {perf}")
+                    
+                    # Store response in session state
+                    st.session_state.messages.append({
+                        "role": "assistant", 
+                        "content": answer, 
+                        "model": selected_model, 
+                        "time": perf
+                    })
                 else:
-                    st.error(f"Backend Error: {response.status_code} - {response.text}")
-            except requests.exceptions.Timeout:
-                st.error("The AI is taking too long to answer. Please check your CPU load.")
+                    st.error(f"Backend Error {response.status_code}")
             except Exception as e:
-                st.error(f"Connection error: {e}")
+                st.error(f"Error: {e}")

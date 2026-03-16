@@ -1,0 +1,18 @@
+services:
+  backend:
+    build: .
+    network_mode: "host"
+    volumes:
+      - ./data:/app/data
+      - ./chroma_db:/app/chroma_db
+      - ./logs:/app/logs
+    env_file:
+      - .env
+
+  frontend:
+    build: .
+    network_mode: "host"
+    environment:
+      - BACKEND_URL=http://127.0.0.1:8000
+    depends_on:
+      - backend

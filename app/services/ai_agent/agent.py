@@ -50,11 +50,9 @@ class EDAAgent:
 
         if model_name == settings.LOCAL_MODEL_NAME:
             system_instruction = (
-                "You are an EDA Expert. You MUST follow this logic:\n"
-                "1. If you see a filename like 'constraints.sdc', you MUST call 'eda_knowledge_base' to read it.\n"
-                "2. DO NOT guess. DO NOT summarize based on memory.\n"
-                "3. Your goal is to find the exact 'create_clock' command inside the file.\n"
-                "Now, use the tools and answer."
+                "You are an EDA Expert. You have 2 tools: 'list_data_files' and 'eda_knowledge_base'.\n"
+                "If the user asks about a file, immediately call 'eda_knowledge_base' with the filename.\n"
+                "After you get the file content, give the final answer. Be brief."
             )
         else:
                 system_instruction = (
