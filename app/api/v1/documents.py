@@ -1,30 +1,33 @@
 import os
 import shutil
 from fastapi import APIRouter, UploadFile, File, HTTPException
+from app.services.rag.document_loader import DocumentLoaderService
+from app.services.rag.vector_store import VectorStoreService
 
 router = APIRouter()
 
 @router.post("/upload")
 async def upload_document(file: UploadFile = File(...)):
-    # Create 'data' folder if it does not exist
+    """
+    This function allows the user to upload a file (Verilog, SDC, or PDF).
+    1. It saves the file in the 'data' folder.
+    2. It reads the file content.
+    3. It adds the information to the AI's memory (Vector Database).
+    """
     if not os.path.exists("data"):
         os.makedirs("data")
 
     upload_path = f"data/{file.filename}"
     
     try:
-        # Save the file
+        #Save the file from the user's computer to our server
         with open(upload_path, "wb") as buffer:
             shutil.copyfileobj(file.file, buffer)
-        
-        # We need to import these here to avoid circular imports
-        from app.services.rag.document_loader import DocumentLoaderService
-        from app.services.rag.vector_store import VectorStoreService
-        
+
         loader_service = DocumentLoaderService()
         vector_service = VectorStoreService()
 
-        # Load and Index
+        # Load the new document and split it into small pieces (chunks)
         new_docs = loader_service.load_single_document(upload_path)
         if new_docs:
             vector_service.add_documents(new_docs)
@@ -33,5 +36,5 @@ async def upload_document(file: UploadFile = File(...)):
             return {"message": "File is empty or not supported"}
             
     except Exception as e:
-        print(f"Error: {e}") # This will show in the terminal
+        print(f"Error: {e}")
         raise HTTPException(status_code=500, detail=str(e))

@@ -26,7 +26,6 @@ class ChatRequest(BaseModel):
 @router.post("/send")
 async def send_message(request: ChatRequest):
     """
-    A1-A2 Level:
     1. Start a timer to check speed.
     2. Ask the AI Agent for an answer using the selected model.
     3. Save the result and time to a log file.
@@ -45,7 +44,6 @@ async def send_message(request: ChatRequest):
         end_time = time.time()
         duration = round(end_time - start_time, 2)
 
-        # Ensure the logs directory exists
         if not os.path.exists("logs"):
             os.makedirs("logs")
 
