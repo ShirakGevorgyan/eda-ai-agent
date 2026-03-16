@@ -54,23 +54,21 @@ if prompt := st.chat_input("Ask about your hardware design..."):
     with st.chat_message("user"):
         st.markdown(prompt)
 
+    # Inside user input block
     with st.chat_message("assistant"):
-        with st.spinner("Analyzing files..."):
-            payload = {
-                "message": prompt,
-                "model_name": selected_model
-            }
-            response = requests.post(CHAT_URL, json=payload)
-            
-            
-            if response.status_code == 200:
-                data = response.json()
-                answer = data.get("ai_response")
-                performance = data.get("performance") # Get time from backend
+        with st.spinner("Analyzing files with Local AI (this can take 1-2 minutes on CPU)..."):
+            try:
+                payload = {"message": prompt, "model_name": selected_model}
+                # Added timeout=300 (5 minutes)
+                response = requests.post(CHAT_URL, json=payload, timeout=300)
                 
-                st.markdown(answer)
-                st.caption(f"⏱️ Response time: {performance}") # Show time below answer
-                
-                st.session_state.messages.append({"role": "assistant", "content": answer})
-            else:
-                st.error("Error communicating with Backend.")
+                if response.status_code == 200:
+                    data = response.json()
+                    answer = data.get("ai_response")
+                    st.markdown(answer)
+                else:
+                    st.error(f"Backend Error: {response.status_code} - {response.text}")
+            except requests.exceptions.Timeout:
+                st.error("The AI is taking too long to answer. Please check your CPU load.")
+            except Exception as e:
+                st.error(f"Connection error: {e}")
