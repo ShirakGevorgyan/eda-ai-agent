@@ -18,7 +18,7 @@ async def root():
     return {
         "message": f"Welcome to {settings.PROJECT_NAME}",
         "status": "Running",
-        "model_configured": settings.MODEL_NAME
+        "model_configured": settings.DEFAULT_MODEL
     }
 
 @app.get("/health")

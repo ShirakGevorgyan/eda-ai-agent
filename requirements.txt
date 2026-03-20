@@ -16,3 +16,5 @@ markdown
 streamlit
 python-multipart
 langchain-ollama
+pytest
+httpx
